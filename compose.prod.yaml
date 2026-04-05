@@ -1,13 +1,21 @@
 name: cafejeux
 
+x-logging: &default-logging
+  driver: "json-file"
+  options:
+    max-size: "10m"
+    max-file: "3"
+
 services:
   cafejeux:
     image: php:8.4-apache
     container_name: cafejeux
+    restart: unless-stopped
+    stop_grace_period: 10s
     networks:
       - traefik-proxy
     volumes:
-      - .:/var/www/html
+      - .:/var/www/html:ro
     command: >
       bash -c "
         a2enmod rewrite &&
@@ -15,6 +23,25 @@ services:
       "
     environment:
       - APACHE_DOCUMENT_ROOT=/var/www/html
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost/ || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+      start_interval: 2s
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 512M
+          pids: 100
+        reservations:
+          cpus: "0.25"
+          memory: 128M
+    logging: *default-logging
+    security_opt:
+      - no-new-privileges:true
     labels:
       - traefik.enable=true
       - traefik.http.routers.cafejeux.rule=Host(`cafejeux.cmnemoi.com`)
