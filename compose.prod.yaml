@@ -10,10 +10,9 @@ services:
   cafejeux:
     image: php:8.4-apache
     container_name: cafejeux
+    ports: ["127.0.0.1:8130:80"]
     restart: unless-stopped
     stop_grace_period: 10s
-    networks:
-      - traefik-proxy
     volumes:
       - .:/var/www/html:ro
     command: >
@@ -29,7 +28,6 @@ services:
       timeout: 5s
       retries: 3
       start_period: 15s
-      start_interval: 2s
     deploy:
       resources:
         limits:
@@ -42,13 +40,3 @@ services:
     logging: *default-logging
     security_opt:
       - no-new-privileges:true
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.cafejeux.rule=Host(`cafejeux.cmnemoi.com`)
-      - traefik.http.routers.cafejeux.entrypoints=websecure
-      - traefik.http.routers.cafejeux.tls.certresolver=letsencrypt
-      - traefik.http.services.cafejeux.loadbalancer.server.port=80
-
-networks:
-  traefik-proxy:
-    external: true
