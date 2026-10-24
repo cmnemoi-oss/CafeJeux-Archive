@@ -12,6 +12,11 @@ env:
   REGISTRY: ghcr.io
   IMAGE_NAME: cmnemoi-oss/cafejeux-archive
 
+# Un déploiement à la fois : deux `docker compose up` simultanés se gênent en recréant les conteneurs.
+concurrency:
+  group: deploy
+  cancel-in-progress: false
+
 jobs:
   build-and-push:
     name: Construire l'image
