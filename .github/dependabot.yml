@@ -1,0 +1,10 @@
+# Mises à jour hebdomadaires des images, regroupées en une seule PR.
+version: 2
+updates:
+  - package-ecosystem: docker-compose
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      docker-compose:
+        patterns: ["*"]
