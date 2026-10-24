@@ -8,18 +8,11 @@ x-logging: &default-logging
 
 services:
   cafejeux:
-    image: php:8.4-apache
+    image: ghcr.io/cmnemoi-oss/cafejeux-archive:${IMAGE_TAG:-main}
     container_name: cafejeux
     ports: ["127.0.0.1:8130:80"]
     restart: unless-stopped
     stop_grace_period: 10s
-    volumes:
-      - .:/var/www/html:ro
-    command: >
-      bash -c "
-        a2enmod rewrite &&
-        apache2-foreground
-      "
     environment:
       - APACHE_DOCUMENT_ROOT=/var/www/html
     healthcheck:

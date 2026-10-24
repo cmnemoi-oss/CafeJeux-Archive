@@ -1,0 +1,6 @@
+# Fichiers de déploiement : inutiles au site, et listés par Options +Indexes s'ils étaient copiés.
+.git
+.github
+.dockerignore
+Dockerfile
+compose*.yaml
