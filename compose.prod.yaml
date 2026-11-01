@@ -10,13 +10,13 @@ services:
   cafejeux:
     image: ghcr.io/cmnemoi-oss/cafejeux-archive:${IMAGE_TAG:-main}
     container_name: cafejeux
-    expose: ["80"]
+    expose: ["8080"]
     restart: unless-stopped
     stop_grace_period: 10s
     environment:
       - APACHE_DOCUMENT_ROOT=/var/www/html
     healthcheck:
-      test: ["CMD-SHELL", "php -r \"exit(file_get_contents('http://localhost/') !== false ? 0 : 1);\""]
+      test: ["CMD-SHELL", "php -r \"exit(file_get_contents('http://localhost:8080/') !== false ? 0 : 1);\""]
       interval: 30s
       timeout: 5s
       retries: 3
