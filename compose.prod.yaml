@@ -10,7 +10,7 @@ services:
   cafejeux:
     image: ghcr.io/cmnemoi-oss/cafejeux-archive:${IMAGE_TAG:-main}
     container_name: cafejeux
-    ports: ["127.0.0.1:8130:80"]
+    expose: ["80"]
     restart: unless-stopped
     stop_grace_period: 10s
     environment:
